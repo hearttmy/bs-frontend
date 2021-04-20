@@ -1,4 +1,4 @@
-import { login, logout, getInfo } from '@/api/user'
+import { login, logout, getInfo, register } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/token'
 import { resetRouter } from '@/router'
 
@@ -30,18 +30,21 @@ const mutations = {
 const actions = {
   // user login
   login ({ commit }, userInfo) {
-    const {
-      username,
-      password
-    } = userInfo
     return new Promise((resolve, reject) => {
-      login({
-        username: username.trim(),
-        password: password
-      }).then(response => {
+      login(userInfo).then(response => {
         const { data } = response
         commit('SET_TOKEN', data.token)
         setToken(data.token)
+        resolve()
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
+
+  register ({ commit }, userInfo) {
+    return new Promise((resolve, reject) => {
+      register(userInfo).then(() => {
         resolve()
       }).catch(error => {
         reject(error)
