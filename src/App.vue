@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <router-view/>
+    <transition name="slide-fade" mode="out-in">
+      <router-view/>
+    </transition>
   </div>
 </template>
 
@@ -37,5 +39,26 @@ $cursor: #fff;
     border-radius: 5px;
     color: #454545;
   }
+}
+
+.slide-fade-enter-active {
+  transition: all 0.2s ease;
+}
+
+.slide-fade-leave-active {
+  transition: all 0.2s ease;
+}
+
+.slide-fade-enter,
+.slide-fade-leave-to {
+  opacity: 0;
+}
+
+.slide-fade-enter {
+  transform: translateX(-50px);
+}
+
+.slide-fade-leave-to {
+  transform: translateX(50px);
 }
 </style>

@@ -37,7 +37,7 @@ export default {
       if (!this.isDashboard(first)) {
         matched = [{
           path: '/dashboard',
-          meta: { title: 'Dashboard' }
+          meta: { title: '首页' }
         }].concat(matched)
       }
 

@@ -21,5 +21,6 @@ module.exports = {
         symbolId: 'icon-[name]'
       })
       .end()
-  }
+  },
+  lintOnSave: false
 }
