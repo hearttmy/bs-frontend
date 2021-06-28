@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Layout from '@/layout'
+import store from '@/store'
 
 Vue.use(VueRouter)
 
@@ -29,9 +30,39 @@ const routes = [
       {
         path: 'dashboard',
         name: 'Dashboard',
-        component: () => import('@/views/dashboard/Dashboard'),
+        component: () => import('@/views/dashboard/index'),
         meta: {
           title: '首页',
+          icon: 'dashboard'
+        }
+      }
+    ]
+  },
+  {
+    path: '/statistic',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'Statistic',
+        component: () => import('@/views/settings/Dashboard'),
+        meta: {
+          title: '数据统计',
+          icon: 'list'
+        }
+      }
+    ]
+  },
+  {
+    path: '/map',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'Map',
+        component: () => import('@/views/settings/Dashboard'),
+        meta: {
+          title: '地图展示',
           icon: 'dashboard'
         }
       }
@@ -44,14 +75,15 @@ const routes = [
       {
         path: 'index',
         name: 'Settings',
-        component: () => import('@/views/settings/Dashboard'),
+        component: () => import('@/views/settings/index'),
         meta: {
           title: '设备配置',
-          icon: 'dashboard'
+          icon: 'star'
         }
       }
     ]
   },
+
   {
     path: '/user',
     component: Layout,
@@ -81,7 +113,7 @@ const routes = [
         }
       }
     ]
-  },
+  }
 ]
 
 const createRouter = () => new VueRouter({
@@ -97,5 +129,15 @@ export function resetRouter () {
   const newRouter = createRouter()
   router.matcher = newRouter.matcher // reset router
 }
+
+router.beforeEach((to, from, next) => {
+  const token = store.state.user.token
+  // 这里是对登录后的值进行判断，也可对token的值进行判断
+  if (to.path !== '/login' && to.path !== '/register' && !token) {
+    next({ path: '/login' })
+  } else {
+    next()
+  }
+})
 
 export default router
