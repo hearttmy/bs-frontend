@@ -45,7 +45,7 @@ const routes = [
       {
         path: 'index',
         name: 'Statistic',
-        component: () => import('@/views/settings/Dashboard'),
+        component: () => import('@/views/dashboard/index'),
         meta: {
           title: '数据统计',
           icon: 'list'
@@ -60,7 +60,7 @@ const routes = [
       {
         path: 'index',
         name: 'Map',
-        component: () => import('@/views/settings/Dashboard'),
+        component: () => import('@/views/dashboard/index'),
         meta: {
           title: '地图展示',
           icon: 'dashboard'
@@ -75,7 +75,7 @@ const routes = [
       {
         path: 'index',
         name: 'Settings',
-        component: () => import('@/views/settings/index'),
+        component: () => import('@/views/dashboard/index'),
         meta: {
           title: '设备配置',
           icon: 'star'

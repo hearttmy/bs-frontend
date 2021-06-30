@@ -3,52 +3,52 @@
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('newVisitis')">
         <div class="card-panel-icon-wrapper icon-people">
-          <svg-icon icon-class="peoples" class-name="card-panel-icon" />
+          <svg-icon icon-class="example" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            New Visits
+            设备总数
           </div>
-          <count-to :start-val="0" :end-val="102400" :duration="2600" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="panelData.totalDeviceNum" :duration="500" class="card-panel-num" />
         </div>
       </div>
     </el-col>
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('messages')">
         <div class="card-panel-icon-wrapper icon-message">
-          <svg-icon icon-class="message" class-name="card-panel-icon" />
+          <svg-icon icon-class="example" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            Messages
+            在线设备总数
           </div>
-          <count-to :start-val="0" :end-val="81212" :duration="3000" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="panelData.onlineDeviceNum" :duration="500" class="card-panel-num" />
         </div>
       </div>
     </el-col>
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('purchases')">
         <div class="card-panel-icon-wrapper icon-money">
-          <svg-icon icon-class="money" class-name="card-panel-icon" />
+          <svg-icon icon-class="message" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            Purchases
+            消息总数
           </div>
-          <count-to :start-val="0" :end-val="9280" :duration="3200" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="panelData.totalMessageNum" :duration="1000" class="card-panel-num" />
         </div>
       </div>
     </el-col>
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('shoppings')">
         <div class="card-panel-icon-wrapper icon-shopping">
-          <svg-icon icon-class="shopping" class-name="card-panel-icon" />
+          <svg-icon icon-class="message" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            Shoppings
+            今日消息数
           </div>
-          <count-to :start-val="0" :end-val="13600" :duration="3600" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="panelData.todayMessageNum" :duration="100" class="card-panel-num" />
         </div>
       </div>
     </el-col>
@@ -62,9 +62,11 @@ export default {
   components: {
     CountTo
   },
+  props: {
+    panelData: Object
+  },
   methods: {
     handleSetLineChartData (type) {
-      this.$emit('handleSetLineChartData', type)
     }
   }
 }
@@ -80,7 +82,6 @@ export default {
 
   .card-panel {
     height: 108px;
-    cursor: pointer;
     font-size: 12px;
     position: relative;
     overflow: hidden;
@@ -103,11 +104,11 @@ export default {
       }
 
       .icon-money {
-        background: #f4516c;
+        background: #34bfa3;
       }
 
       .icon-shopping {
-        background: #34bfa3
+        background: #36a3f7
       }
     }
 
@@ -120,11 +121,11 @@ export default {
     }
 
     .icon-money {
-      color: #f4516c;
+      color: #34bfa3;
     }
 
     .icon-shopping {
-      color: #34bfa3
+      color: #36a3f7
     }
 
     .card-panel-icon-wrapper {
