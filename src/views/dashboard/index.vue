@@ -5,7 +5,7 @@
     <panel-group  :panelData="panelData"/>
 
     <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
-      <bar-chart />
+      <bar-chart :chartData="barChartData"/>
     </el-row>
 
   </div>
@@ -26,7 +26,7 @@ export default {
   },
   data () {
     return {
-      barChartData: {},
+      barChartData: [],
       panelData: {
         totalDeviceNum: 0,
         onlineDeviceNum: 0,
@@ -37,13 +37,20 @@ export default {
   },
   created () {
     this.setPanelData()
+    this.$store.dispatch('data/setDeviceList').then(() => {
+      this.setBarChartData(this.$store.state.data.deviceList)
+    })
   },
   methods: {
     setPanelData () {
       getPanelData().then(res => {
         const { data } = res
         this.panelData = data
-        console.log(this.panelData)
+      })
+    },
+    setBarChartData (data) {
+      data.forEach(item => {
+        this.barChartData.push(item)
       })
     }
   }
@@ -53,6 +60,7 @@ export default {
 <style lang="scss" scoped>
 .dashboard-editor-container {
   padding: 32px;
+  height: 100vh;
   background-color: rgb(240, 242, 245);
   position: relative;
 

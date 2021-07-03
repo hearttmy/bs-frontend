@@ -23,6 +23,10 @@ export default {
     height: {
       type: String,
       default: '300px'
+    },
+    chartData: {
+      type: Array,
+      default: () => []
     }
   },
   data () {
@@ -42,12 +46,26 @@ export default {
     this.chart.dispose()
     this.chart = null
   },
+  watch: {
+    chartData: {
+      handler (val, oldVal) {
+        this.setOptions(val)
+      },
+      deep: true // true 深度监听
+    }
+  },
   methods: {
     initChart () {
       this.chart = echarts.init(this.$el, 'macarons')
       this.setOptions(this.chartData)
     },
-    setOptions ({ chartData }) {
+    setOptions (chartData) {
+      const xAxisData = chartData.map(item => {
+        return item.deviceId
+      })
+      const messageNumList = chartData.map(item => {
+        return item.messageNum
+      })
       this.chart.setOption({
         tooltip: {
           trigger: 'axis',
@@ -64,7 +82,7 @@ export default {
         },
         xAxis: [{
           type: 'category',
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          data: xAxisData,
           axisTick: {
             alignWithLabel: true
           }
@@ -76,25 +94,11 @@ export default {
           }
         }],
         series: [{
-          name: 'pageA',
+          name: '消息数',
           type: 'bar',
           stack: 'vistors',
           barWidth: '60%',
-          data: [79, 52, 200, 334, 390, 330, 220],
-          animationDuration
-        }, {
-          name: 'pageB',
-          type: 'bar',
-          stack: 'vistors',
-          barWidth: '60%',
-          data: [80, 52, 200, 334, 390, 330, 220],
-          animationDuration
-        }, {
-          name: 'pageC',
-          type: 'bar',
-          stack: 'vistors',
-          barWidth: '60%',
-          data: [30, 52, 200, 334, 390, 330, 220],
+          data: messageNumList,
           animationDuration
         }]
       })

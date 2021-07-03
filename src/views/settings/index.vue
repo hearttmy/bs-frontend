@@ -1,53 +1,36 @@
 <template>
   <div class="app-container">
     <el-table v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%">
-      <el-table-column align="center" label="ID" width="80">
+      <el-table-column align="center" label="Index" width="80" type="index">
+      </el-table-column>
+
+      <el-table-column align="center" label="DeviceId">
         <template slot-scope="{row}">
-          <span>{{ row.id }}</span>
+          <span>{{ row.deviceId }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column width="180px" align="center" label="Date">
+      <el-table-column align="center" label="MessageNum">
         <template slot-scope="{row}">
-          <span>{{ row.timestamp | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
+          <span>{{ row.messageNum }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column width="120px" align="center" label="Author">
-        <template slot-scope="{row}">
-          <span>{{ row.author }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column width="100px" label="Importance">
-        <template slot-scope="{row}">
-          <svg-icon v-for="n in + row.importance" :key="n" icon-class="star" class="meta-item__icon" />
-        </template>
-      </el-table-column>
-
-      <el-table-column class-name="status-col" label="Status" width="110">
-        <template slot-scope="{row}">
-          <el-tag :type="row.status | statusFilter">
-            {{ row.status }}
-          </el-tag>
-        </template>
-      </el-table-column>
-
-      <el-table-column min-width="300px" label="Title">
+      <el-table-column min-width="300px" label="DeviceName" align="center">
         <template slot-scope="{row}">
           <template v-if="row.edit">
-            <el-input v-model="row.title" class="edit-input" size="small" />
+            <el-input v-model="row.deviceName" class="edit-input" size="small" />
             <el-button
               class="cancel-btn"
               size="small"
               icon="el-icon-refresh"
-              type="warning"
-              @click="cancelEdit(row)"
+              type="success"
+              @click="confirmEdit(row)"
             >
-              cancel
+              OK
             </el-button>
           </template>
-          <span v-else>{{ row.title }}</span>
+          <span v-else>{{ row.deviceName }}</span>
         </template>
       </el-table-column>
 
@@ -55,12 +38,12 @@
         <template slot-scope="{row}">
           <el-button
             v-if="row.edit"
-            type="success"
+            type="warning"
             size="small"
             icon="el-icon-circle-check-outline"
-            @click="confirmEdit(row)"
+            @click="cancelEdit(row)"
           >
-            Ok
+            cancel
           </el-button>
           <el-button
             v-else
@@ -78,7 +61,7 @@
 </template>
 
 <script>
-import { fetchList } from '@/api/article'
+import { setDeviceName } from '@/api/settings'
 
 export default {
   name: 'InlineEditTable',
@@ -103,22 +86,21 @@ export default {
     }
   },
   created () {
-    this.getList()
+    this.$store.dispatch('data/setDeviceList').then(() => {
+      this.setList()
+    })
   },
   methods: {
-    async getList () {
-      this.listLoading = true
-      const { data } = await fetchList(this.listQuery)
-      const items = data.items
-      this.list = items.map(v => {
-        this.$set(v, 'edit', false) // https://vuejs.org/v2/guide/reactivity.html
-        v.originalTitle = v.title //  will be used when user click the cancel botton
+    setList () {
+      this.list = this.$store.state.data.deviceList.map(v => {
+        this.$set(v, 'edit', false)
+        v.originalDeviceName = v.deviceName
         return v
       })
       this.listLoading = false
     },
     cancelEdit (row) {
-      row.title = row.originalTitle
+      row.deviceName = row.originalDeviceName
       row.edit = false
       this.$message({
         message: 'The title has been restored to the original value',
@@ -127,7 +109,8 @@ export default {
     },
     confirmEdit (row) {
       row.edit = false
-      row.originalTitle = row.title
+      row.originalDeviceName = row.deviceName
+      setDeviceName({ deviceId: row.deviceId, deviceName: row.deviceName })
       this.$message({
         message: 'The title has been edited',
         type: 'success'

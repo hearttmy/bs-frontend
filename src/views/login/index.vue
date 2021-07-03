@@ -61,7 +61,7 @@
 
 export default {
   name: 'Login',
-  data() {
+  data () {
     const validateUsername = (rule, value, callback) => {
       if (value.length < 1) {
         callback(new Error('用户名不得为空'))
@@ -95,7 +95,7 @@ export default {
   },
   watch: {
     $route: {
-      handler: function(route) {
+      handler: function (route) {
         const query = route.query
         if (query) {
           this.redirect = query.redirect
@@ -105,25 +105,25 @@ export default {
       immediate: true
     }
   },
-  created() {
+  created () {
     // window.addEventListener('storage', this.afterQRScan)
   },
-  mounted() {
+  mounted () {
     if (this.loginForm.username === '') {
       this.$refs.username.focus()
     } else if (this.loginForm.password === '') {
       this.$refs.password.focus()
     }
   },
-  destroyed() {
+  destroyed () {
     // window.removeEventListener('storage', this.afterQRScan)
   },
   methods: {
-    checkCapslock(e) {
+    checkCapslock (e) {
       const { key } = e
       this.capsTooltip = key && key.length === 1 && (key >= 'A' && key <= 'Z')
     },
-    showPwd() {
+    showPwd () {
       if (this.passwordType === 'password') {
         this.passwordType = ''
       } else {
@@ -133,7 +133,7 @@ export default {
         this.$refs.password.focus()
       })
     },
-    handleLogin() {
+    handleLogin () {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
@@ -142,7 +142,7 @@ export default {
               this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
               this.loading = false
             })
-            .catch((err) => {
+            .catch(() => {
               this.loading = false
             })
         } else {
@@ -151,7 +151,7 @@ export default {
         }
       })
     },
-    getOtherQuery(query) {
+    getOtherQuery (query) {
       return Object.keys(query).reduce((acc, cur) => {
         if (cur !== 'redirect') {
           acc[cur] = query[cur]
