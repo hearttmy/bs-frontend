@@ -12,7 +12,7 @@
 export default {
   data () {
     return {
-      center: [],
+      center: [117, 30],
       map: {},
       markers: []
     }

@@ -1,6 +1,5 @@
-import { login, logout, getInfo, register } from '@/api/user'
+import { login, getInfo, register } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/token'
-import { resetRouter } from '@/router'
 
 const getDefaultState = () => {
   return {
@@ -84,16 +83,8 @@ const actions = {
     commit,
     state
   }) {
-    return new Promise((resolve, reject) => {
-      logout(state.token).then(() => {
-        removeToken() // must remove  token  first
-        resetRouter()
-        commit('RESET_STATE')
-        resolve()
-      }).catch(error => {
-        reject(error)
-      })
-    })
+    removeToken()
+    commit('RESET_STATE')
   },
 
   // remove token
